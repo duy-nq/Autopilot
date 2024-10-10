@@ -2,7 +2,7 @@ from ObjectDetector.BaseDetector import BaseDetector
 from CollisionHandlingSystem.BaseController import BaseController
 
 class Vehicle:
-    def __init__(self, acceleration, detector: BaseDetector, ctr_system: BaseController) -> None:
+    def __init__(self, acceleration: int, detector: BaseDetector, ctr_system: BaseController) -> None:
         self.acceleration = acceleration
         self.detector = detector
         self.controller = ctr_system

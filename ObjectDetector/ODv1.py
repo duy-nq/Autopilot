@@ -50,7 +50,7 @@ class ODv1(BaseDetector):
 
         return matrix
 
-    def object_detection(frame, self):
+    def object_detection(self, frame):
         def remove(boxes):
             frame_cp = frame.orig_img.copy()
             
@@ -75,9 +75,9 @@ class ODv1(BaseDetector):
         
         estimated_matrix = self.calculate_estimated_matrix(box_and_class[1], frame.shape[:2])
         modified_image = remove(box_and_class[1])
-        draw_centered_point(frame, box_and_class)  
+        display_image = draw_centered_point(frame, box_and_class)  
 
-        return modified_image, estimated_matrix
+        return display_image, modified_image, estimated_matrix
 
     def novel_detection(frame, matrix: np.ndarray):
         height, width, _ = frame.shape

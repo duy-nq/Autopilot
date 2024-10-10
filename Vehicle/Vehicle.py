@@ -1,16 +1,18 @@
 from ObjectDetector.BaseDetector import BaseDetector
 from CollisionHandlingSystem.BaseController import BaseController
+import cv2 as cv
 
 class Vehicle:
-    def __init__(self, acceleration: int, detector: BaseDetector, ctr_system: BaseController) -> None:
+    def __init__(self, acceleration: int, detector: BaseDetector, ctr_system: BaseController, path: str) -> None:
         self.acceleration = acceleration
         self.detector = detector
         self.controller = ctr_system
         self.signal = 0
+        self.video_path = path
 
         self.actions = {
             'GO': self.proceed,
-            'BRAKE': self.brake,
+            'IDLE': self.idle,
             'TURN_LEFT': lambda: self.rotate('LEFT'),
             'TURN_RIGHT': lambda: self.rotate('RIGHT')
         }
@@ -18,17 +20,14 @@ class Vehicle:
     def proceed():
         print('Going ahead')
 
-    def brake():
-        print('Break')
+    def idle():
+        print('Using break')
 
     def rotate(direction: str):
         print(f'Turning {direction}')
 
-    def start(self):
-        while(1==1):
-            self.signal = self.controller.automation()
+    def extract_video(self):
+        return cv.VideoCapture(self.video_path)
 
-            if self.signal in self.actions:
-                self.actions[self.signal]()
-            else:
-                print(f'Invalid Signal: {self.signal}')
+    def start(self):
+        pass

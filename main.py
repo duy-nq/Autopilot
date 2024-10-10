@@ -6,9 +6,9 @@ from config import get_config
 def main():
     config = get_config()
     
-    detector = ODv1(config.model_path, config.threshold)
+    detector = ODv1(config.model_path)
     controller = RBC(12)
-    v = Vehicle(20, detector, controller)
+    v = Vehicle(20, detector, controller, config.video_path)
 
     v.start()
 

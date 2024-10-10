@@ -1,5 +1,6 @@
 from ObjectDetector.BaseDetector import BaseDetector
 from ultralytics import YOLO
+import cv2 as cv
 from Utils.Transform import *
 from Utils.Render import draw_centered_point
 import numpy as np
@@ -17,11 +18,11 @@ class ODv1(BaseDetector):
         self.min_conf = min_conf
         self.threshold = threshold
 
-    def calculation(self, boxes: list, frame_size: tuple, matrix = np.zeros((4,4), dtype=int)) -> np.ndarray:
+    def calculate_estimated_matrix(self, boxes: list, frame_size: tuple, matrix = np.ndarray((4,4), dtype=int)) -> np.ndarray:
         """
         Image to (4,4) ndarray with x-axis is "left to right" and y-axis is "near to far"
         """
-        
+
         for box in boxes:
             x_center, y_center, _, height = box
             row, col = 0, 0
@@ -71,8 +72,35 @@ class ODv1(BaseDetector):
         
         box_and_class = zip(tensor_list_to_int(result.boxes.cls),
                             tensor_to_float(result.boxes.xywh))
-           
-        return remove(box_and_class[1])
+        
+        estimated_matrix = self.calculate_estimated_matrix(box_and_class[1], frame.shape[:2])
+        modified_image = remove(box_and_class[1])
+        draw_centered_point(frame, box_and_class)  
 
-    def novel_detection(frame):
-        pass
+        return modified_image, estimated_matrix
+
+    def novel_detection(frame, matrix: np.ndarray):
+        height, width, _ = frame.shape
+        roi = frame[int(height * 3 / 4):height, int(width/4):int(width*3/4)]
+
+        edges = cv.Canny(cv.cvtColor(roi, cv.COLOR_BGR2GRAY), 50, 50)
+        white_pixel = np.sum(edges == 255)
+
+        cropped_edges = [
+            edges[:,:int(edges.shape[1]/4)],
+            edges[:,int(edges.shape[1]/4):int(edges.shape[1]*2/4)],
+            edges[:,int(edges.shape[1]*2/4):int(edges.shape[1]*3/4)],
+            edges[:,int(edges.shape[1]*3/4):]
+        ]
+
+        pixel_intensity = [np.sum(ce == 255)/white_pixel for ce in cropped_edges]
+
+        for i in range(len(pixel_intensity)):
+            if pixel_intensity[i] > 0.5:
+                matrix[0][i] == 4
+            elif pixel_intensity[i] > 0.25:
+                matrix[0][i] == 3
+            elif pixel_intensity[i] > 0.15:
+                matrix[0][i] == 2
+
+        return matrix

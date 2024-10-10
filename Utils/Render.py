@@ -14,7 +14,7 @@ COLOR_FOR_CLASS = {
 }
 
 def draw_centered_point(image, vd: list):
-    point = [(xywh[0], xywh[1]) for xywh in [xywh[2] for xywh in vd]]
+    point = [(xywh[0], xywh[1]) for xywh in [xywh[1] for xywh in vd]]
     vclass = [vclass[0] for vclass in vd]
 
     for i in range(len(point)):

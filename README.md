@@ -1,33 +1,10 @@
 # **PROTOTYPE**
 ## **1. Overview**
-Road detection will be played a crucial role while doing task A and B
+Here is my project flowchart, based on test's guidance:
 
-Novel object detection will be based on threshold?
+![Flowchart](https://github.com/duy-nq/Autopilot/blob/main/Assests/prototype.png)
 
-Flow:
-- Video footage
-- Road (lane) detection (perform better when we have a map)
-- Vehicle, people detection + novel obj. recognize -> surrounding_map
-- Rule based system to control a car via surrounding_map
-
-How to detect a road?
-- Focus on main part
-
-System analyst:
-- Small VRAM, balancing both accuracy on detection and real-time process
-
-Rule for controlling stage:
-- BLOCK rotate to the left or right if there is obstacle in a limit range
-- SLOW DOWN when reach the minimum distance with the up-front vehicles
-- GO AHEAD if everything is all free
-
-Limited object for detection
-- Car, Truck,...
-- Number of obj for each detection
-
-About road detection
-- Better if it was a combination between MAPS and real-time footage, know about the planned trip will help, too.
-- So far, hard to perform in such 03 days -> use alternative (easy) approach: "area of interested"!.
+Suppose we have a **vehicle** equipped with a dashcam in the center (recording while driving). **Object Detector**, a combination of 'normal' and 'unseen' object detection uses that data to recognize things and represent it on the **estimated_matrix**. That matrix is ​​considered input to the **Collision Handling System** (in this case, I chose rule-based instead of an AI model) to make a decision and then send that signal back to the car.
 
 ## **2. Hardware analysis for choosing model**
 For this project, I have 16GB of RAM and 2GB of VRAM (I am using GPU MX-250). This settings is not very good for real-time decision problem, to be honest!
@@ -108,6 +85,19 @@ What is the role of others values in the matrix? For the most left and right, I 
 Why I choose a 4x4 matrix? It based on my thought of 'rural' area, and with the data that I have - the car drive on a small road. Better size of the matrix, the higher chances of control the vehicle correctly; besides, continuing to use RBC in this case will be a challenge.
 
 The fixed sized of matrix for now is the problem because we can't assure that any 'rural' areas has the small roads. This is not flexible but it was easy for me to apply some simple rules (the space of possible things that could happen is smaller).
+
+# **THINGS THAT NEED IMPROVEMENT**
+## **1. Road detection**
+I have seen a lot of project on Github related to road detection. For me, it will be a very good update that could improve a lot of tasks. For example, if we focus on road/driving area, we only need to detect in that 'cropped frame' (for both novel and 'well-known' object), which might lead to a better performance.
+
+![Road/Driving area](https://github.com/duy-nq/Autopilot/blob/main/Assests/road.png)
+
+## **2. Turning problem**
+For now, this project just use the existing video as a main source, and neither I have any chance to control nor know when the vehicle trying to turn... So I just ignore this important aspect while driving.
+
+![Possible Decision](https://github.com/duy-nq/Autopilot/blob/main/Assests/possible_decision.png)
+
+Then, estimated_matrix in my idea will be a more crucial parts and RBC need to have a huge update!
 
 # **FINAL THOUGHTS**
 I would like to extend my sincere gratitude to Delta Cognition for the opportunity to participate in this test. It has presented numerous challenges and aspects that I have not encountered before, greatly enriching my experience.

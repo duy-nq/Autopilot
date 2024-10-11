@@ -102,8 +102,8 @@ Then, estimated_matrix in my idea will be a more crucial parts and RBC need to h
 ## **3. Running project**
 I currently face *DLL file errors* (in some libraries) that block the running of the whole program. Solving these errors is important for the improvement of the workflow and will enable me to conduct full testing of this work. This work is done mainly in Colab for functions use Ultralytics and OpenCV. With a view to full testing and validation, there is a need for more robust setup as regards the local environment.
 
-## **4. Focus on Estimated Matrix Transposition**
-One more thing to consider is the refinement of the approach towards the estimated matrix, particularly focusing on its transposition. In turn, this shall serve in making informed decisions in vehicle navigation in relation to adverse environmental distractions like traffic lights, fire hydrants, etc. It can be done by modifying **predicted boxes** after model make a prediction, before we are going to the state of calculating **estimated_matrix** (all of them are in ODv1).
+## **4. Focus on Estimated Matrix**
+One more thing to consider is the refinement of the approach towards the estimated matrix, particularly focusing on vehicles and other objects position like traffic light, traffic signal, etc. Because I just realized that in some situations, non touchable (and safe for vehicle) objects are contained in the matrix, and could lead to wrong decisions.
 
 # **FINAL THOUGHTS**
 I would like to extend my sincere gratitude to Delta Cognition for the opportunity to participate in this test. It has presented numerous challenges and aspects that I have not encountered before, greatly enriching my experience.

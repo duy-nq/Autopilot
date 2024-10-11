@@ -8,7 +8,7 @@ class ECar(Vehicle):
     def __init__(self, acceleration: int, detector: BaseDetector, ctr_system: BaseController) -> None:
         super().__init__(acceleration, detector, ctr_system)
         self.actions['REVERSE'] = self.reverse
-        self.FRAME_TO_SKIP = 15
+        self.FRAME_TO_SKIP = 3
 
     def reverse() -> str:
         return 'Reserving'
